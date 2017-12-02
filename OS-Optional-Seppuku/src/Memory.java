@@ -10,7 +10,8 @@ public class Memory {
 
     public Memory(int PAGE_SIZE){
         this.PAGE_SIZE = PAGE_SIZE;
-        dma.run();
+
+        new Thread(dma).start();
     }
 
     public int getPage(){
@@ -74,7 +75,8 @@ class DMA implements Runnable{
     @Override
     public void run() {
         while(!done) {
-            if (dmaFlag && IOFlag) {
+            System.out.println(memory2.size());
+            if (dmaFlag && IOFlag && memory2.size() > 0) {
                 int y = accessDMA();
                 System.out.println(y);
                 setDmaFlag(false);

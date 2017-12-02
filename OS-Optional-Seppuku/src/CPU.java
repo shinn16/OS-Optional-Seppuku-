@@ -4,9 +4,7 @@ public class CPU {
         final int PAGE_SIZE = 4;
         OS os = new OS(PAGE_SIZE);
 
-        int finish = 0;
-
-        while (finish < 4){ //TODO make dynamic based on process count
+        while (os.terminated()){
             PCB pcb;
             Pair pcVal;
 
@@ -17,7 +15,7 @@ public class CPU {
             int data = os.memory.access(pcVal);
 
             //remember old pc val
-            Pair pcValOld = pcVal;
+            Pair pcValOld = pcVal.clone();
 
             //check offset and increment
             if (pcVal.offset() >= PAGE_SIZE){
@@ -25,8 +23,8 @@ public class CPU {
                     pcVal.setPage(pcb.nextPage());
                     pcVal.setOffset(0);
                 }
-                catch (NullPointerException e){
-                    finish++;
+                catch (ArrayIndexOutOfBoundsException e){
+                    os.processTerminated();
                 }
             }
             else pcVal.setOffset(pcVal.offset() + 1);
@@ -34,6 +32,7 @@ public class CPU {
             //check to see what the data is
             if (data == 1){
                 new BubbleSort().run();
+                os.savePCB(pcVal, State.Ready);
             }
             else{
                 os.deviceDriver(pcValOld);
@@ -42,13 +41,14 @@ public class CPU {
 
             //check for interruption from DMA
             if (os.memory.isDMAFlag()){
-                os.savePCB(pcVal, State.Ready);
                 //call os interrupt handler
                 os.interruptHandler();
             }
 
 
         }
+
+        System.out.println("finish in cpu");
 
         os.memory.killDMA();
     }

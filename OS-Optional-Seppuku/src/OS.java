@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class OS {
 
-    private ArrayList<PCB> readyQueue = new ArrayList<>(), waitingQueue = new ArrayList<>();
+    private ArrayList<PCB> readyQueue = new ArrayList<>(), waitingQueue = new ArrayList<>(), terminatedQueue = new ArrayList<>();
     private final int PAGE_SIZE;
     public Memory memory;
     private PCB pCurr;
@@ -57,23 +57,35 @@ public class OS {
     }
 
     public void savePCB(Pair PC, State state){
-        pCurr.setPcVal(PC);
-        if (state == State.Waiting){
-            pCurr.setState(State.Waiting);
-            waitingQueue.add(pCurr);
+        if (pCurr != null) {
+            pCurr.setPcVal(PC);
+            if (state == State.Waiting) {
+                pCurr.setState(State.Waiting);
+                waitingQueue.add(pCurr);
+            } else {
+                pCurr.setState(State.Ready);
+                readyQueue.add(pCurr);
+            }
+            pCurr = null;
         }
-        else{
-            pCurr.setState(State.Ready);
-            readyQueue.add(pCurr);
-        }
-        pCurr = null;
     }
 
     public void interruptHandler(){
-        PCB p = waitingQueue.remove(0);
-        p.setState(State.Ready);
-        readyQueue.add(p);
-        memory.removeDMA();
-        memory.setDMAFlag(true);
+        if (waitingQueue.size() > 0) {
+            PCB p = waitingQueue.remove(0);
+            p.setState(State.Ready);
+            readyQueue.add(p);
+            memory.removeDMA();
+            memory.setDMAFlag(true);
+        }
+    }
+
+    public void processTerminated(){
+        terminatedQueue.add(pCurr);
+        pCurr = null;
+    }
+
+    public boolean terminated(){
+        return !(terminatedQueue.size() >= 1); //TODO make dynamic
     }
 }

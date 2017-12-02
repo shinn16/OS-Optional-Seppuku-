@@ -21,4 +21,8 @@ public class Pair {
     public void setOffset(int v){
         this.v = v;
     }
+
+    public Pair clone(){
+        return new Pair(this.k, this.v);
+    }
 }
