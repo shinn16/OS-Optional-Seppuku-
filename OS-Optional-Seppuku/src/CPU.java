@@ -4,10 +4,14 @@ public class CPU {
         final int PAGE_SIZE = 4;
         OS os = new OS(PAGE_SIZE);
 
-        while (true){
+        int finish = 0;
+
+        while (finish < 4){ //TODO make dynamic based on process count
+            PCB pcb;
             Pair pcVal;
 
-            pcVal = os.scheduler();
+            pcb = os.scheduler();
+            pcVal = pcb.getPcVal();
 
             //get data from memory
             int data = os.memory.access(pcVal);
@@ -17,8 +21,13 @@ public class CPU {
 
             //check offset and increment
             if (pcVal.offset() >= PAGE_SIZE){
-
-                pcVal.setOffset(0);
+                try {
+                    pcVal.setPage(pcb.nextPage());
+                    pcVal.setOffset(0);
+                }
+                catch (NullPointerException e){
+                    finish++;
+                }
             }
             else pcVal.setOffset(pcVal.offset() + 1);
 
@@ -40,5 +49,7 @@ public class CPU {
 
 
         }
+
+        os.memory.killDMA();
     }
 }

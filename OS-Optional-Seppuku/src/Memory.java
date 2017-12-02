@@ -10,6 +10,7 @@ public class Memory {
 
     public Memory(int PAGE_SIZE){
         this.PAGE_SIZE = PAGE_SIZE;
+        dma.run();
     }
 
     public int getPage(){

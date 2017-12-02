@@ -49,11 +49,11 @@ public class OS {
         memory.writeDMA(memory.access(addressVector));
     }
 
-    public Pair scheduler(){
+    public PCB scheduler(){
         PCB p1 = readyQueue.remove(0);
         p1.setState(State.Running);
         pCurr = p1;
-        return pCurr.getPcVal();
+        return pCurr;
     }
 
     public void savePCB(Pair PC, State state){

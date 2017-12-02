@@ -28,12 +28,9 @@ public class PCB {
         this.pcVal = pcVal;
     }
 
-    public int getPage_i() {
-        return page_i;
-    }
-
-    public void setPage_i(int page_i) {
-        this.page_i = page_i;
+    public int nextPage(){
+        page_i++;
+        return pages[page_i];
     }
 
     public long getArrivalTime() {
