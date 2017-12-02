@@ -31,6 +31,8 @@ public class Memory {
         return memory1[physicalAddress];
     }
 
+    // dma class wrapper methods
+
     public void removeDMA(){
         dma.removeDMA();
     }
@@ -50,6 +52,14 @@ public class Memory {
     public void setIOFlag(boolean flag){
         dma.setIOFlag(flag);
     }
+
+    public boolean isDMAFlag(){
+        return dma.isDmaFlag();
+    }
+
+    public boolean isIOFlag(){
+        return dma.isIOFlag();
+    }
 }
 
 class DMA implements Runnable{
@@ -63,6 +73,14 @@ class DMA implements Runnable{
             System.out.println(y);
             setDmaFlag(false);
         }
+    }
+
+    boolean isDmaFlag() {
+        return dmaFlag;
+    }
+
+    boolean isIOFlag() {
+        return IOFlag;
     }
 
     void setDmaFlag(boolean dmaFlag) {
