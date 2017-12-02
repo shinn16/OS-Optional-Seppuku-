@@ -1,12 +1,15 @@
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class OS {
 
     private ArrayList<PCB> readyQueue = new ArrayList<>(), waitingQueue = new ArrayList<>();
-    private Memory memory = new Memory();
+    private final int PAGE_SIZE = 4;
+    private Memory memory = new Memory(PAGE_SIZE);
+    private PCB pCurr;
 
     public OS(){
         try {
@@ -34,11 +37,42 @@ public class OS {
                 readyQueue.add(p);
             }
 
-            while(!readyQueue.isEmpty()){
-                System.out.println(readyQueue.remove(0));
-            }
+
         }catch (IOException e){
             e.printStackTrace();
         }
+    }
+
+    public void deviceDriver(Pair addressVector){
+        int pageNumber = addressVector.getKey();
+        int offset = addressVector.getValue();
+        int physicalAddress = pageNumber * PAGE_SIZE + offset;
+        //memory.writeDMA(physicalAddress);
+    }
+
+    public Pair scheduler(){
+        PCB p1 = readyQueue.remove(0);
+        p1.setState(State.Running);
+        pCurr = p1;
+        return pCurr.getPcVal();
+    }
+
+    public void savePCB(Pair PC, State state){
+        pCurr.setPcVal(PC);
+        if (state == State.Waiting){
+            pCurr.setState(State.Waiting);
+            waitingQueue.add(pCurr);
+        }
+        else{
+            pCurr.setState(State.Ready);
+            readyQueue.add(pCurr);
+        }
+        pCurr = null;
+    }
+
+    public void interruptHandler(){
+        PCB p = waitingQueue.remove(0);
+        p.setState(State.Ready);
+        readyQueue.add(p);
     }
 }

@@ -23,6 +23,10 @@ public class PCB {
         return pcVal;
     }
 
+    public void setPcVal(Pair pcVal) {
+        this.pcVal = pcVal;
+    }
+
     public long getArrivalTime() {
         return arrivalTime;
     }
