@@ -41,11 +41,19 @@ public class Memory {
     public void writeDMA(int data){
         dma.writeDMA(data);
     }
+
+    public void setDmaFlag(boolean flag){
+        dma.setDmaFlag(flag);
+    }
+
+    public void setIOFlag(boolean flag){
+        dma.setIOFlag(flag);
+    }
 }
 
 class DMA implements Runnable{
     private boolean dmaFlag = true, IOFlag = true;
-    private ArrayList<Integer> memory2 = new ArrayList<>();
+    private ArrayList<Integer> memory2 = new ArrayList<>(); //
 
     @Override
     public void run() {
