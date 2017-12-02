@@ -75,7 +75,7 @@ public class OS {
             PCB p = waitingQueue.remove(0);
             p.setState(State.Ready);
             readyQueue.add(p);
-            memory.removeDMA();
+            //if( !memory.removeDMA() ) System.out.println("locked out of dma");
             memory.setDMAFlag(true);
         }
     }

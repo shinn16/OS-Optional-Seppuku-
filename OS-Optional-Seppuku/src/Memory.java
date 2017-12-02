@@ -35,8 +35,8 @@ public class Memory {
 
     // dma class wrapper methods
 
-    public void removeDMA(){
-        dma.removeDMA();
+    public boolean removeDMA(){
+        return dma.removeDMA();
     }
 
     public int accessDMA(){
@@ -75,11 +75,11 @@ class DMA implements Runnable{
     @Override
     public void run() {
         while(!done) {
-            System.out.println(memory2.size());
+            System.out.println("size: " + memory2.size());
             if (dmaFlag && IOFlag && memory2.size() > 0) {
                 lock = true;
                 int y = accessDMA();
-                System.out.println(y);
+                System.out.println("data: " + y);
                 setDmaFlag(false);
                 lock = false;
             }
