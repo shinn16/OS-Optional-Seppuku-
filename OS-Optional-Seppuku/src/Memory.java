@@ -64,23 +64,23 @@ class DMA implements Runnable{
         }
     }
 
-    public void setDmaFlag(boolean dmaFlag) {
+    void setDmaFlag(boolean dmaFlag) {
         this.dmaFlag = dmaFlag;
     }
 
-    public void setIOFlag(boolean IOFlag) {
+    void setIOFlag(boolean IOFlag) {
         this.IOFlag = IOFlag;
     }
 
-    public int accessDMA(){
+    int accessDMA(){
         return memory2.get(0);
     }
 
-    public void removeDMA(){
+    void removeDMA(){
         memory2.remove(0);
     }
 
-    public void writeDMA(int data){
+    void writeDMA(int data){
         memory2.add(data);
     }
 }
