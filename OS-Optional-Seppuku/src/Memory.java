@@ -17,16 +17,16 @@ public class Memory {
     }
 
     public void write(Pair addressVector, int data){ // takes logical address and writes data to physical address
-        int pageNumber = addressVector.getKey();
-        int offset = addressVector.getValue();
+        int pageNumber = addressVector.page();
+        int offset = addressVector.offset();
         int physicalAddress = pageNumber * PAGE_SIZE + offset;
         while (physicalAddress > memory1.length) memory1 = Arrays.copyOf(memory1, memory1.length * 2); //just in case
         memory1[physicalAddress] = data;
     }
 
     public int access(Pair addressVector){  // access the data in the physical memory at an address.
-        int pageNumber = addressVector.getKey();
-        int offset = addressVector.getValue();
+        int pageNumber = addressVector.page();
+        int offset = addressVector.offset();
         int physicalAddress = pageNumber * PAGE_SIZE + offset;
         return memory1[physicalAddress];
     }
@@ -45,7 +45,7 @@ public class Memory {
         dma.writeDMA(data);
     }
 
-    public void setDmaFlag(boolean flag){
+    public void setDMAFlag(boolean flag){
         dma.setDmaFlag(flag);
     }
 
