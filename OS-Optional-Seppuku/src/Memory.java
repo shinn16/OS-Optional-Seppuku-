@@ -69,7 +69,7 @@ public class Memory {
 }
 
 class DMA implements Runnable{
-    private boolean dmaFlag = true, IOFlag = true, done = false;
+    private boolean dmaFlag = true, IOFlag = true, done = false, lock = false;
     private ArrayList<Integer> memory2 = new ArrayList<>(); //
 
     @Override
@@ -77,9 +77,11 @@ class DMA implements Runnable{
         while(!done) {
             System.out.println(memory2.size());
             if (dmaFlag && IOFlag && memory2.size() > 0) {
+                lock = true;
                 int y = accessDMA();
                 System.out.println(y);
                 setDmaFlag(false);
+                lock = false;
             }
         }
     }
@@ -108,8 +110,12 @@ class DMA implements Runnable{
         return memory2.get(0);
     }
 
-    void removeDMA(){
-        memory2.remove(0);
+    boolean removeDMA(){
+        if (!lock){
+            memory2.remove(0);
+            return true;
+        }
+        else return false;
     }
 
     void writeDMA(int data){
