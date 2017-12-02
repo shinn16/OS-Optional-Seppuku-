@@ -1,17 +1,19 @@
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class OS {
 
     private ArrayList<PCB> readyQueue = new ArrayList<>(), waitingQueue = new ArrayList<>();
-    private final int PAGE_SIZE = 4;
-    private Memory memory = new Memory(PAGE_SIZE);
+    private final int PAGE_SIZE;
+    public Memory memory;
     private PCB pCurr;
 
-    public OS(){
+    public OS(int PAGE_SIZE){
+        this.PAGE_SIZE = PAGE_SIZE;
+        memory = new Memory(this.PAGE_SIZE);
+
         try {
             Scanner scanner = new Scanner(new File("input.txt"));
             while (scanner.hasNextLine()){
@@ -44,10 +46,7 @@ public class OS {
     }
 
     public void deviceDriver(Pair addressVector){
-        int pageNumber = addressVector.getKey();
-        int offset = addressVector.getValue();
-        int physicalAddress = pageNumber * PAGE_SIZE + offset;
-        //memory.writeDMA(physicalAddress);
+        memory.writeDMA(memory.access(addressVector));
     }
 
     public Pair scheduler(){
@@ -74,5 +73,7 @@ public class OS {
         PCB p = waitingQueue.remove(0);
         p.setState(State.Ready);
         readyQueue.add(p);
+        memory.removeDMA();
+        memory.setDMAFlag(true);
     }
 }

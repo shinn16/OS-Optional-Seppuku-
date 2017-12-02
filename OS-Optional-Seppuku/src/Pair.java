@@ -6,11 +6,19 @@ public class Pair {
         this.v = v;
     }
 
-    public int getKey(){
+    public int page(){
         return k;
     }
 
-    public int getValue(){
+    public int offset(){
         return v;
+    }
+
+    public void setPage(int k){
+        this.k = k;
+    }
+
+    public void setOffset(int v){
+        this.v = v;
     }
 }

@@ -2,6 +2,7 @@ public class PCB {
 
     private int id, arrivalOrder;
     private  int[] pages;
+    private int page_i = 0;
     private long arrivalTime, endTime, firstIO;
     private State state;
     private Pair pcVal;
@@ -25,6 +26,14 @@ public class PCB {
 
     public void setPcVal(Pair pcVal) {
         this.pcVal = pcVal;
+    }
+
+    public int getPage_i() {
+        return page_i;
+    }
+
+    public void setPage_i(int page_i) {
+        this.page_i = page_i;
     }
 
     public long getArrivalTime() {
