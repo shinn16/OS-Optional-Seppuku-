@@ -59,18 +59,24 @@ public class Memory {
     public boolean isIOFlag(){
         return dma.isIOFlag();
     }
+
+    public void killDMA(){
+        dma.setDone(true);
+    }
 }
 
 class DMA implements Runnable{
-    private boolean dmaFlag = true, IOFlag = true;
+    private boolean dmaFlag = true, IOFlag = true, done = false;
     private ArrayList<Integer> memory2 = new ArrayList<>(); //
 
     @Override
     public void run() {
-        if (dmaFlag && IOFlag){
-            int y = accessDMA();
-            System.out.println(y);
-            setDmaFlag(false);
+        while(!done) {
+            if (dmaFlag && IOFlag) {
+                int y = accessDMA();
+                System.out.println(y);
+                setDmaFlag(false);
+            }
         }
     }
 
@@ -80,6 +86,10 @@ class DMA implements Runnable{
 
     boolean isIOFlag() {
         return IOFlag;
+    }
+
+    void setDone(boolean flag){
+        done = flag;
     }
 
     void setDmaFlag(boolean dmaFlag) {
