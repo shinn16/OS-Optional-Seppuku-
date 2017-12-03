@@ -14,36 +14,23 @@ public class CPU {
             //get data from memory
             int data = os.memory.access(pcVal);
 
-            //remember old pc val
-            Pair pcValOld = pcVal.clone();
-
-            //check offset and increment
-            if (pcVal.offset() >= PAGE_SIZE){
-                try {
-                    pcVal.setPage(pcb.nextPage());
-                    pcVal.setOffset(0);
-                }
-                catch (ArrayIndexOutOfBoundsException e){
-                    os.processTerminated();
-                }
-            }
-            else pcVal.setOffset(pcVal.offset() + 1);
-
             //check to see what the data is
             if (data == 1){
                 new BubbleSort().run();
-                os.savePCB(pcVal, State.Ready);
+                os.savePCB(State.Ready);
             }
             else{
-                os.deviceDriver(pcValOld);
-                os.savePCB(pcVal, State.Waiting);
+                os.deviceDriver(pcVal);
+                os.savePCB(State.Waiting);
+                System.out.println("put in dma");
             }
 
             //check for interruption from DMA
-            if (os.memory.isDMAFlag()){
+            /*if (os.memory.isDMAFlag()){
                 //call os interrupt handler
                 os.interruptHandler();
-            }
+            }*/
+            os.interruptHandler();
 
 
         }
@@ -51,5 +38,7 @@ public class CPU {
         System.out.println("finish in cpu");
 
         os.memory.killDMA();
+
+        System.exit(0);
     }
 }

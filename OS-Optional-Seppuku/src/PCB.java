@@ -6,14 +6,17 @@ public class PCB {
     private long arrivalTime, endTime, firstIO;
     private State state;
     private Pair pcVal;
+    private int offset, PAGE_SIZE;
 
-    public PCB(int id, State state, Pair pcVal, int arrivalOrder, int[] pages){
+    public PCB(int id, State state, Pair pcVal, int arrivalOrder, int[] pages, int offset, int PAGE_SIZE){
         this.id = id;
         this.arrivalTime = System.currentTimeMillis();
         this.state = state;
         this.pcVal = pcVal;
+        this.offset = offset;
         this.arrivalOrder = arrivalOrder;
         this.pages = pages;
+        this.PAGE_SIZE = PAGE_SIZE;
     }
 
     public int getId() {
@@ -28,9 +31,22 @@ public class PCB {
         this.pcVal = pcVal;
     }
 
-    public int nextPage(){
-        page_i++;
-        return pages[page_i];
+    public boolean incrementPcVal(){
+        //need to next page
+        if (pcVal.offset() >= PAGE_SIZE - 1){
+            page_i++;
+            pcVal.setPage(pages[page_i]);
+            pcVal.setOffset(0);
+        }
+        else{
+            pcVal.setOffset(pcVal.offset() + 1);
+        }
+
+        //if we are at the end of the pages
+        if (page_i == pages.length - 1 && pcVal.offset() >= offset % PAGE_SIZE){
+            return false;
+        }
+        return true;
     }
 
     public long getArrivalTime() {

@@ -34,7 +34,7 @@ public class OS {
                     if (offset%4 == 0 && offset >= 4) pageC++;
                 }
 
-                PCB p = new PCB(Integer.parseInt(data[0]), State.Ready, new Pair(pages[0], 0), Integer.parseInt(data[1]), pages);
+                PCB p = new PCB(Integer.parseInt(data[0]), State.Ready, new Pair(pages[0], 0), Integer.parseInt(data[1]), pages, code.length, PAGE_SIZE);
 
                 readyQueue.add(p);
             }
@@ -56,13 +56,14 @@ public class OS {
         return pCurr;
     }
 
-    public void savePCB(Pair PC, State state){
+    public void savePCB(State state){
         if (pCurr != null) {
-            pCurr.setPcVal(PC);
-            if (state == State.Waiting) {
+            if ( !pCurr.incrementPcVal() ) terminatedQueue.add(pCurr);
+            else if (state == State.Waiting) {
                 pCurr.setState(State.Waiting);
                 waitingQueue.add(pCurr);
-            } else {
+            }
+            else {
                 pCurr.setState(State.Ready);
                 readyQueue.add(pCurr);
             }
@@ -76,7 +77,7 @@ public class OS {
             p.setState(State.Ready);
             readyQueue.add(p);
             //if( !memory.removeDMA() ) System.out.println("locked out of dma");
-            memory.setDMAFlag(true);
+            //memory.setDMAFlag(true);
         }
     }
 

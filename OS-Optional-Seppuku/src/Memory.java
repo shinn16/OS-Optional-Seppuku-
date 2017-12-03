@@ -72,8 +72,8 @@ class DMA implements Runnable{
     @Override
     public void run() {
         while(!done) {
-            System.out.println("size: " + memory2.size());
-            if (dmaFlag && IOFlag && memory2.size() > 0) {
+            if (memory2.size() > 0) System.out.println("size: " + memory2.size());
+            if (/*dmaFlag && IOFlag && */memory2.size() > 0) {
                 int y = accessDMA();
                 System.out.println("data: " + y);
                 setDmaFlag(false);
