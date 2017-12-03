@@ -1,8 +1,12 @@
+import java.util.Arrays;
+
 public class CPU {
 
     public  static void main(String[] args){
         final int PAGE_SIZE = 4;
         OS os = new OS(PAGE_SIZE);
+
+        System.out.println(Arrays.toString(os.memory.memory1));
 
         while (os.terminated()){
             PCB pcb;

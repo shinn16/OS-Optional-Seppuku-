@@ -8,7 +8,7 @@ public class Memory {
     private int PAGE_SIZE;
     private int pageNumber = 0;
     private DMA dma = new DMA();
-    private int[] memory1 = new int[128]; //if each page holds 4 items then one pages corresponds to 4 places in memory
+    public int[] memory1 = new int[128]; //if each page holds 4 items then one pages corresponds to 4 places in memory
 
     public Memory(int PAGE_SIZE){
         this.PAGE_SIZE = PAGE_SIZE;

@@ -28,10 +28,13 @@ public class OS {
                 int[] pages = new int[numberOfPages];
                 for (int i = 0; i < pages.length; i ++) pages[i] = memory.getPage();
 
-                int pageC = 0;
+                int pageC = 0, offsetC = 0;
                 for (int offset = 0; offset < code.length; offset ++){
-                    memory.write(new Pair(pages[pageC], offset%4), code[offset]);
-                    if (offset%4 == 0 && offset >= 4) pageC++;
+                    memory.write(new Pair(pages[pageC], offsetC++), code[offset]);
+                    if (offsetC > PAGE_SIZE - 1) {
+                        offsetC = 0;
+                        pageC++;
+                    }
                 }
 
                 PCB p = new PCB(Integer.parseInt(data[0]), State.Ready, new Pair(pages[0], 0), Integer.parseInt(data[1]), pages, code.length, PAGE_SIZE);
