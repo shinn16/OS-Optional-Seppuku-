@@ -6,8 +6,6 @@ public class CPU {
         final int PAGE_SIZE = 4;
         OS os = new OS(PAGE_SIZE);
 
-        System.out.println(Arrays.toString(os.memory.memory1));
-
         while (os.terminated()){
             PCB pcb;
             Pair pcVal;
@@ -26,7 +24,6 @@ public class CPU {
             else{
                 os.deviceDriver(pcVal);
                 os.savePCB(State.Waiting);
-                System.out.println("put in dma");
             }
 
             //check for interruption from DMA

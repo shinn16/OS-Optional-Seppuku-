@@ -9,6 +9,7 @@ public class OS {
     private final int PAGE_SIZE;
     public Memory memory;
     private PCB pCurr;
+    private int processCount;
 
     public OS(int PAGE_SIZE){
         this.PAGE_SIZE = PAGE_SIZE;
@@ -17,6 +18,7 @@ public class OS {
         try {
             Scanner scanner = new Scanner(new File("input.txt"));
             while (scanner.hasNextLine()){
+                processCount++;
                 String[] data = scanner.nextLine().split(",");
 
                 // converts process instructions to an array for easy reading
@@ -84,12 +86,7 @@ public class OS {
         }
     }
 
-    public void processTerminated(){
-        terminatedQueue.add(pCurr);
-        pCurr = null;
-    }
-
     public boolean terminated(){
-        return !(terminatedQueue.size() == 4); //TODO make dynamic
+        return !(terminatedQueue.size() == processCount);
     }
 }
