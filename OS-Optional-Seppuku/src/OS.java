@@ -90,6 +90,6 @@ public class OS {
     }
 
     public boolean terminated(){
-        return !(terminatedQueue.size() >= 1); //TODO make dynamic
+        return !(terminatedQueue.size() == 4); //TODO make dynamic
     }
 }
