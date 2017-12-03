@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class Memory {
 
@@ -67,13 +69,12 @@ public class Memory {
 
 class DMA implements Runnable{
     private boolean dmaFlag = true, IOFlag = true, done = false;
-    private ArrayList<Integer> memory2 = new ArrayList<>(); //
+    private List<Integer> memory2 = Collections.synchronizedList(new ArrayList<Integer>());
 
     @Override
     public void run() {
         while(!done) {
-            if (memory2.size() > 0) System.out.println("size: " + memory2.size());
-            if (/*dmaFlag && IOFlag && */memory2.size() > 0) {
+            if (memory2.size() > 0) {
                 int y = accessDMA();
                 System.out.println("data: " + y);
                 setDmaFlag(false);
