@@ -42,8 +42,8 @@ public class Memory {
        return dma.accessDMA();
     }
 
-    public void writeDMA(int data){
-        dma.writeDMA(data);
+    public void writeDMA(int data, int process){
+        dma.writeDMA(data, process);
     }
 
     public void setDMAFlag(boolean flag){
@@ -106,7 +106,7 @@ class DMA implements Runnable{
         return memory2.remove(0);
     }
 
-    void writeDMA(int data){
-        memory2.add(data);
+    void writeDMA(int data, int process){
+        memory2.add(process);
     }
 }

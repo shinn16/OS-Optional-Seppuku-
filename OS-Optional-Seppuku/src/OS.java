@@ -51,7 +51,7 @@ public class OS {
     }
 
     public void deviceDriver(Pair addressVector){
-        memory.writeDMA(memory.access(addressVector));
+        memory.writeDMA(memory.access(addressVector), pCurr.getId());
     }
 
     public PCB scheduler(){

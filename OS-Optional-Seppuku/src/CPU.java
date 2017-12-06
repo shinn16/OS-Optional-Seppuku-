@@ -36,7 +36,7 @@ public class CPU {
 
         }
 
-        System.out.println("finish in cpu");
+        System.out.println("finish");
 
         os.memory.killDMA();
 
