@@ -62,9 +62,8 @@ public class OS {
     }
 
     public void savePCB(State state){
-        if (pCurr != null) {
-            if ( !pCurr.incrementPcVal() ) terminatedQueue.add(pCurr);
-            else if (state == State.Waiting) {
+        if (pCurr != null && incrementPcVal()) {
+            if (state == State.Waiting) {
                 pCurr.setState(State.Waiting);
                 waitingQueue.add(pCurr);
             }
@@ -76,17 +75,34 @@ public class OS {
         }
     }
 
+    public boolean incrementPcVal(){
+        if ( !pCurr.incrementPcVal() ) {
+            terminatedQueue.add(pCurr);
+            pCurr = null;
+            return false;
+        }
+        else return true;
+    }
+
+    public PCB getpCurr() {
+        return pCurr;
+    }
+
     public void interruptHandler(){
         if (waitingQueue.size() > 0) {
             PCB p = waitingQueue.remove(0);
             p.setState(State.Ready);
             readyQueue.add(p);
             //if( !memory.removeDMA() ) System.out.println("locked out of dma");
-            //memory.setDMAFlag(true);
+            memory.setDMAFlag(true);
         }
     }
 
     public boolean terminated(){
         return !(terminatedQueue.size() == processCount);
+    }
+
+    public boolean ready(){
+        return (readyQueue.size() != 0 || pCurr != null);
     }
 }
