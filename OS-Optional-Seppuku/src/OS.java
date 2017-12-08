@@ -77,7 +77,7 @@ public class OS {
 
     public boolean incrementPcVal(){
         if ( !pCurr.incrementPcVal() ) {
-            System.out.println("Add terminated: " + pCurr.getId());
+            System.out.println("Terminated: " + pCurr.getId());
             terminatedQueue.add(pCurr);
             pCurr = null;
             return false;
